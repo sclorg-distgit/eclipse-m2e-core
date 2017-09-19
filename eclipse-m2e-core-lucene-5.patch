@@ -1,0 +1,57 @@
+--- m2e-maven-runtime/org.eclipse.m2e.maven.indexer/src/main/java/org/apache/maven/index/DefaultIndexerEngine.java
++++ m2e-maven-runtime/org.eclipse.m2e.maven.indexer/src/main/java/org/apache/maven/index/DefaultIndexerEngine.java
+@@ -25,7 +25,8 @@ import java.util.Set;
+ 
+ import org.apache.lucene.document.Document;
+ import org.apache.lucene.document.Field;
+-import org.apache.lucene.document.Fieldable;
++import org.apache.lucene.index.IndexableField;
++import org.apache.lucene.index.IndexableFieldType;
+ import org.apache.lucene.index.IndexWriter;
+ import org.apache.lucene.index.Term;
+ import org.apache.lucene.search.IndexSearcher;
+@@ -112,10 +113,9 @@ public class DefaultIndexerEngine
+     {
+         final HashMap<String, String> result = new HashMap<String, String>();
+ 
+-        for ( Object o : d.getFields() )
++        for ( IndexableField f : d.getFields() )
+         {
+-            Fieldable f = (Fieldable) o;
+-            if ( f.isStored() )
++            if ( f.fieldType().stored() )
+             {
+                 result.put( f.name(), f.stringValue() );
+             }
+
+--- org.eclipse.m2e.core.ui/src/org/eclipse/m2e/core/ui/internal/util/ProposalUtil.java
++++ org.eclipse.m2e.core.ui/src/org/eclipse/m2e/core/ui/internal/util/ProposalUtil.java
+@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Control;
+ import org.eclipse.swt.widgets.Text;
+ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
+ 
+-import org.apache.lucene.queryParser.QueryParser;
++import org.apache.lucene.queryparser.classic.QueryParser;
+ 
+ import org.apache.maven.project.MavenProject;
+ 
+--- org.eclipse.m2e.core/src/org/eclipse/m2e/core/internal/index/nexus/NexusIndexManager.java.sav	2015-07-08 11:24:01.721784835 +0300
++++ org.eclipse.m2e.core/src/org/eclipse/m2e/core/internal/index/nexus/NexusIndexManager.java	2015-07-08 11:27:07.617008266 +0300
+@@ -842,7 +842,7 @@ public class NexusIndexManager implement
+   }
+ 
+   protected Directory getIndexDirectory(IRepository repository) throws IOException {
+-    return FSDirectory.open(getIndexDirectoryFile(repository));
++    return FSDirectory.open(getIndexDirectoryFile(repository).toPath());
+   }
+ 
+   public IndexedArtifactGroup resolveGroup(IndexedArtifactGroup group) {
+@@ -1131,7 +1131,7 @@ public class NexusIndexManager implement
+             String details = getIndexDetails(repository);
+             String id = repository.getUid() + "-cache"; //$NON-NLS-1$
+             File luceneCache = new File(request.getLocalIndexCacheDir(), details);
+-            Directory directory = FSDirectory.open(luceneCache);
++            Directory directory = FSDirectory.open(luceneCache.toPath());
+             IndexingContext cacheCtx = getIndexer().addIndexingContextForced(id, id, null, directory, null, null,
+                 getIndexers(details));
+             request = newIndexUpdateRequest(repository, cacheCtx, monitor);

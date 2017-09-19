@@ -1,0 +1,19 @@
+--- org.eclipse.m2e.core/src/org/eclipse/m2e/core/internal/lifecyclemapping/LifecycleMappingFactory.java
++++ org.eclipse.m2e.core/src/org/eclipse/m2e/core/internal/lifecyclemapping/LifecycleMappingFactory.java
+@@ -634,12 +634,12 @@ public class LifecycleMappingFactory {
+     List<PluginExecutionMetadata> result = new ArrayList<PluginExecutionMetadata>();
+     all_metadatas: for(PluginExecutionMetadata metadata : metadatas) {
+       @SuppressWarnings("unchecked")
+-      Map<String, String> parameters = metadata.getFilter().getParameters();
++      Map<Object, String> parameters = metadata.getFilter().getParameters();
+       if(!parameters.isEmpty()) {
+-        for(String name : parameters.keySet()) {
+-          String value = parameters.get(name);
++        for(Object name : parameters.keySet()) {
++           String value = (String)parameters.get(name);
+           MojoExecution setupExecution = maven.setupMojoExecution(mavenProject, execution, monitor);
+-          if(!eq(value, maven.getMojoParameterValue(mavenProject, setupExecution, name, String.class, monitor))) {
++          if(!eq(value, maven.getMojoParameterValue(mavenProject, setupExecution, (String)name, String.class, monitor))) {
+             continue all_metadatas;
+           }
+         }

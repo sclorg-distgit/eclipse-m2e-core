@@ -1,0 +1,46 @@
+--- m2e-maven-runtime/org.eclipse.m2e.archetype.common/pom.xml
++++ m2e-maven-runtime/org.eclipse.m2e.archetype.common/pom.xml
+@@ -88,8 +88,8 @@
+ 
+             <_exportcontents>
+               META-INF.plexus;-noimport:=true;x-internal:=true,
+-              org.apache.maven.archetype.*;provider=m2e;mandatory:=provider;x-internal:=true,
+-              org.codehaus.plexus.velocity;provider=m2e;mandatory:=provider;x-internal:=true,
++              org.apache.maven.archetype.*;provider=m2e;x-internal:=true,
++              org.codehaus.plexus.velocity;provider=m2e;x-internal:=true,
+             </_exportcontents>
+ 
+             <Import-Package>
+--- m2e-maven-runtime/org.eclipse.m2e.maven.indexer/pom.xml
++++ m2e-maven-runtime/org.eclipse.m2e.maven.indexer/pom.xml
+@@ -63,8 +63,7 @@
+ 
+             <_exportcontents>
+               META-INF.plexus;-noimport:=true,
+-              org.apache.lucene.*;provider=m2e;mandatory:=provider,
+-              org.apache.maven.*;provider=m2e;mandatory:=provider,
++              org.apache.maven.*;provider=m2e,
+             </_exportcontents>
+ 
+             <Import-Package>
+--- m2e-maven-runtime/org.eclipse.m2e.maven.runtime/pom.xml
++++ m2e-maven-runtime/org.eclipse.m2e.maven.runtime/pom.xml
+@@ -145,12 +145,12 @@
+             <_exportcontents>
+               META-INF.plexus;-noimport:=true,
+               META-INF.sisu;-noimport:=true,
+-              org.apache.maven.*;provider=m2e;mandatory:=provider,
+-              org.codehaus.plexus.*;provider=m2e;mandatory:=provider,
+-              org.sonatype.plexus.*;provider=m2e;mandatory:=provider,
+-              org.eclipse.aether.*;provider=m2e;mandatory:=provider,
+-              com.google.inject.*;provider=m2e;mandatory:=provider,
+-              io.takari.*;provider=m2e;mandatory:=provider
++              org.apache.maven.*;provider=m2e,
++              org.codehaus.plexus.*;provider=m2e,
++              org.sonatype.plexus.*;provider=m2e,
++              org.eclipse.aether.*;provider=m2e,
++              com.google.inject.*;provider=m2e,
++              io.takari.*;provider=m2e
+             </_exportcontents>
+ 
+             <Import-Package>
